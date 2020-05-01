@@ -29,6 +29,7 @@ class CircularSliderPaint extends StatefulWidget {
   final bool showHandlerOutter;
   final double sliderStrokeWidth;
   final bool shouldCountLaps;
+  final int initialLaps;
 
   CircularSliderPaint({
     @required this.mode,
