@@ -49,6 +49,7 @@ class CircularSliderPaint extends StatefulWidget {
     @required this.showHandlerOutter,
     @required this.sliderStrokeWidth,
     @required this.shouldCountLaps,
+    @required this.initialLaps
   });
 
   @override
@@ -95,6 +96,7 @@ class _CircularSliderState extends State<CircularSliderPaint> {
   void initState() {
     super.initState();
     _calculatePaintData();
+    _laps = _initialLaps();
   }
 
   // we need to update this widget both with gesture detector but
