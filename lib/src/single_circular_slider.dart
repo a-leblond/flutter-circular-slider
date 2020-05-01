@@ -66,6 +66,8 @@ class SingleCircularSlider extends StatefulWidget {
   /// if true, the onSelectionChange will also return the number of laps in the slider
   /// otherwise, everytime the user completes a full lap, the selection restarts from 0
   final bool shouldCountLaps;
+  
+  final int initialLaps;
 
   SingleCircularSlider(
     this.divisions,
@@ -85,6 +87,7 @@ class SingleCircularSlider extends StatefulWidget {
     this.showHandlerOutter,
     this.sliderStrokeWidth,
     this.shouldCountLaps,
+    this.initialLaps
   })  : assert(position >= 0 && position <= divisions,
             'init has to be > 0 and < divisions value'),
         assert(divisions >= 0 && divisions <= 300,
@@ -138,6 +141,7 @@ class _SingleCircularSliderState extends State<SingleCircularSlider> {
           showRoundedCapInSelection: widget.showRoundedCapInSelection ?? false,
           showHandlerOutter: widget.showHandlerOutter ?? true,
           shouldCountLaps: widget.shouldCountLaps ?? false,
+          initialLaps: widget.initialLaps ?? 0
         ));
   }
 }
