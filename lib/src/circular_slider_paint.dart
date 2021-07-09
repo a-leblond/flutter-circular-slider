@@ -24,7 +24,7 @@ class CircularSliderPaint extends StatefulWidget {
   final Color selectionColor;
   final Color handlerColor;
   final double handlerOutterRadius;
-  final Widget child;
+  final Widget? child;
   final bool showRoundedCapInSelection;
   final bool showHandlerOutter;
   final double sliderStrokeWidth;
@@ -32,24 +32,24 @@ class CircularSliderPaint extends StatefulWidget {
   final int initialLaps;
 
   CircularSliderPaint({
-    @required this.mode,
-    @required this.divisions,
-    @required this.init,
-    @required this.end,
+    required this.mode,
+    required this.divisions,
+    required this.init,
+    required this.end,
     this.child,
-    @required this.primarySectors,
-    @required this.secondarySectors,
-    @required this.onSelectionChange,
-    @required this.onSelectionEnd,
-    @required this.baseColor,
-    @required this.selectionColor,
-    @required this.handlerColor,
-    @required this.handlerOutterRadius,
-    @required this.showRoundedCapInSelection,
-    @required this.showHandlerOutter,
-    @required this.sliderStrokeWidth,
-    @required this.shouldCountLaps,
-    @required this.initialLaps
+    required this.primarySectors,
+    required this.secondarySectors,
+    required this.onSelectionChange,
+    required this.onSelectionEnd,
+    required this.baseColor,
+    required this.selectionColor,
+    required this.handlerColor,
+    required this.handlerOutterRadius,
+    required this.showRoundedCapInSelection,
+    required this.showHandlerOutter,
+    required this.sliderStrokeWidth,
+    required this.shouldCountLaps,
+    required this.initialLaps
   });
 
   @override
@@ -60,21 +60,21 @@ class _CircularSliderState extends State<CircularSliderPaint> {
   bool _isInitHandlerSelected = false;
   bool _isEndHandlerSelected = false;
 
-  SliderPainter _painter;
+  late SliderPainter _painter;
 
   /// start angle in radians where we need to locate the init handler
-  double _startAngle;
+  late double _startAngle;
 
   /// end angle in radians where we need to locate the end handler
-  double _endAngle;
+  late double _endAngle;
 
   /// the absolute angle in radians representing the selection
-  double _sweepAngle;
+  late double _sweepAngle;
 
   /// in case we have a double slider and we want to move the whole selection by clicking in the slider
   /// this will capture the position in the selection relative to the initial handler
   /// that way we will be able to keep the selection constant when moving
-  int _differenceFromInitPoint;
+  late int _differenceFromInitPoint;
 
   /// will store the number of full laps (2pi radians) as part of the selection
   int _laps = 0;
@@ -247,10 +247,10 @@ class _CircularSliderState extends State<CircularSliderPaint> {
   }
 
   void _handlePan(Offset details, bool isPanEnd) {
-    RenderBox renderBox = context.findRenderObject();
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
     var position = renderBox.globalToLocal(details);
 
-    var angle = coordinatesToRadians(_painter.center, position);
+    var angle = coordinatesToRadians(_painter.center!, position);
     var percentage = radiansToPercentage(angle);
     var newValue = percentageToValue(percentage, widget.divisions);
 
@@ -286,32 +286,32 @@ class _CircularSliderState extends State<CircularSliderPaint> {
     if (_painter == null) {
       return false;
     }
-    RenderBox renderBox = context.findRenderObject();
-    var position = renderBox.globalToLocal(details);
+    RenderBox? renderBox = context.findRenderObject() as RenderBox?;
+    var position = renderBox?.globalToLocal(details);
 
     if (position == null) {
       return false;
     }
 
     if (isSingleHandler) {
-      if (isPointAlongCircle(position, _painter.center, _painter.radius)) {
+      if (isPointAlongCircle(position, _painter.center!, _painter.radius!)) {
         _isEndHandlerSelected = true;
         _onPanUpdate(details);
       }
     } else {
       _isInitHandlerSelected = isPointInsideCircle(
-          position, _painter.initHandler, widget.handlerOutterRadius);
+          position, _painter.initHandler!, widget.handlerOutterRadius);
 
       if (!_isInitHandlerSelected) {
         _isEndHandlerSelected = isPointInsideCircle(
-            position, _painter.endHandler, widget.handlerOutterRadius);
+            position, _painter.endHandler!, widget.handlerOutterRadius);
       }
 
       if (isNoHandlersSelected) {
         // we check if the user pressed in the selection in a double handler slider
         // that means the user wants to move the selection as a whole
-        if (isPointAlongCircle(position, _painter.center, _painter.radius)) {
-          var angle = coordinatesToRadians(_painter.center, position);
+        if (isPointAlongCircle(position, _painter.center!, _painter.radius!)) {
+          var angle = coordinatesToRadians(_painter.center!, position);
           if (isAngleInsideRadiansSelection(angle, _startAngle, _sweepAngle)) {
             _isEndHandlerSelected = true;
             _isInitHandlerSelected = true;
@@ -335,9 +335,9 @@ class CustomPanGestureRecognizer extends OneSequenceGestureRecognizer {
   final Function onPanEnd;
 
   CustomPanGestureRecognizer({
-    @required this.onPanDown,
-    @required this.onPanUpdate,
-    @required this.onPanEnd,
+    required this.onPanDown,
+    required this.onPanUpdate,
+    required this.onPanEnd,
   });
 
   @override

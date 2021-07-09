@@ -11,15 +11,15 @@ class BasePainter extends CustomPainter {
   int secondarySectors;
   double sliderStrokeWidth;
 
-  Offset center;
-  double radius;
+  Offset? center;
+  double? radius;
 
   BasePainter({
-    @required this.baseColor,
-    @required this.selectionColor,
-    @required this.primarySectors,
-    @required this.secondarySectors,
-    @required this.sliderStrokeWidth,
+    required this.baseColor,
+    required this.selectionColor,
+    required this.primarySectors,
+    required this.secondarySectors,
+    required this.sliderStrokeWidth,
   });
 
   @override
@@ -30,9 +30,9 @@ class BasePainter extends CustomPainter {
     radius = min(size.width / 2, size.height / 2) - sliderStrokeWidth;
     // we need this in the parent to calculate if the user clicks on the circumference
 
-    assert(radius > 0);
+    assert(radius! > 0);
 
-    canvas.drawCircle(center, radius, base);
+    canvas.drawCircle(center!, radius!, base);
 
     if (primarySectors > 0) {
       _paintSectors(primarySectors, 8.0, selectionColor, canvas);
@@ -48,9 +48,9 @@ class BasePainter extends CustomPainter {
     Paint section = _getPaint(color: color, width: 2.0);
 
     var endSectors =
-        getSectionsCoordinatesInCircle(center, radius + radiusPadding, sectors);
+        getSectionsCoordinatesInCircle(center!, radius! + radiusPadding, sectors);
     var initSectors =
-        getSectionsCoordinatesInCircle(center, radius - radiusPadding, sectors);
+        getSectionsCoordinatesInCircle(center!, radius! - radiusPadding, sectors);
     _paintLines(canvas, initSectors, endSectors, section);
   }
 
@@ -63,7 +63,7 @@ class BasePainter extends CustomPainter {
     }
   }
 
-  Paint _getPaint({@required Color color, double width, PaintingStyle style}) =>
+  Paint _getPaint({required Color color, double? width, PaintingStyle? style}) =>
       Paint()
         ..color = color
         ..strokeCap = StrokeCap.round
